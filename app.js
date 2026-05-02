@@ -247,20 +247,6 @@ function subscribeInvites() {
   const q = query(invitesCol, orderBy("createdAt", "desc"));
 
   onSnapshot(q, (snapshot) => {
-    allInvites = []; // Liste leeren
-
-    snapshot.forEach((doc) => {
-      allInvites.push(doc.data()); // Einträge speichern
-    });
-
-    applyFilters(); // Filter anwenden + Tabelle neu rendern
-  });
-}
-
-function subscribeInvites() {
-  const q = query(invitesCol, orderBy("createdAt", "desc"));
-
-  onSnapshot(q, (snapshot) => {
     allInvites = [];
 
     snapshot.forEach((doc) => {
