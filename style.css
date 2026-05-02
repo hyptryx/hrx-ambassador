@@ -249,13 +249,3 @@ a.twitch-link:hover {
   border: 1px solid var(--border-light);
   background: #fff;
 }
-
-select::-ms-expand {
-  display: none;
-}
-
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
