@@ -40,12 +40,24 @@ const addAmbassadorBtn = document.getElementById("addAmbassadorBtn");
 const inviteForm = document.getElementById("inviteForm");
 const invitesTableBody = document.querySelector("#invitesTable tbody");
 
+// Filter
+const filterWerber = document.getElementById("filterWerber");
+const filterAktivitaet = document.getElementById("filterAktivitaet");
+const sortDatum = document.getElementById("sortDatum");
+
+// Statistik
+const statTotal = document.getElementById("statTotal");
+const statAktiv = document.getElementById("statAktiv");
+const statSehrAktiv = document.getElementById("statSehrAktiv");
+const statAbgelehnt = document.getElementById("statAbgelehnt");
+
 /* ===========================
    Collections
    =========================== */
 
 const ambassadorsCol = collection(db, "ambassadors");
 const invitesCol = collection(db, "ambassadorInvites");
+let allInvites = [];
 
 /* ===========================
    Ambassadors laden
@@ -67,6 +79,22 @@ async function loadAmbassadors() {
 }
 
 loadAmbassadors();
+
+async function loadWerberFilter() {
+  const snapshot = await getDocs(ambassadorsCol);
+
+  filterWerber.innerHTML = '<option value="">Alle Werber</option>';
+
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+    const option = document.createElement("option");
+    option.value = data.name;
+    option.textContent = data.name;
+    filterWerber.appendChild(option);
+  });
+}
+
+loadWerberFilter();
 
 /* ===========================
    Neuen Ambassador hinzufügen
@@ -147,18 +175,105 @@ function renderInviteRow(doc) {
   return tr;
 }
 
+/* ===========================
+   Tabelle neu rendern (für Filter)
+   =========================== */
+
+function renderTable(list) {
+  invitesTableBody.innerHTML = "";
+
+  list.forEach((data) => {
+    const tr = document.createElement("tr");
+
+    const twitchCell = data.twitchLink
+      ? `<a href="${data.twitchLink}" target="_blank" class="twitch-link">Link</a>`
+      : "-";
+
+    tr.innerHTML = `
+      <td>${data.werberName}</td>
+      <td>${data.geworbenerName}</td>
+      <td>${twitchCell}</td>
+      <td>${data.datum}</td>
+      <td>${data.aktivitaet}</td>
+      <td>${data.zusageGesendet ? "ja" : "nein"}</td>
+      <td>${data.modsAktionen}</td>
+    `;
+
+    invitesTableBody.appendChild(tr);
+  });
+}
+
+/* ===========================
+   Filter anwenden
+   =========================== */
+
+function applyFilters() {
+  let filtered = [...allInvites];
+
+  // Filter Werber
+  if (filterWerber.value !== "") {
+    filtered = filtered.filter(i => i.werberName === filterWerber.value);
+  }
+
+  // Filter Aktivität
+  if (filterAktivitaet.value !== "") {
+    filtered = filtered.filter(i => i.aktivitaet === filterAktivitaet.value);
+  }
+
+  // Sortierung nach Datum
+  filtered.sort((a, b) => {
+    if (sortDatum.value === "desc") {
+      return b.datum.localeCompare(a.datum);
+    } else {
+      return a.datum.localeCompare(b.datum);
+    }
+  });
+
+  renderTable(filtered);
+}
+
+/* ===========================
+   Statistik aktualisieren
+   =========================== */
+
+function updateStats() {
+  statTotal.textContent = allInvites.length;
+  statAktiv.textContent = allInvites.filter(i => i.aktivitaet === "aktiv").length;
+  statSehrAktiv.textContent = allInvites.filter(i => i.aktivitaet === "sehr_aktiv").length;
+  statAbgelehnt.textContent = allInvites.filter(i => i.aktivitaet === "abgelehnt").length;
+}
+
 function subscribeInvites() {
   const q = query(invitesCol, orderBy("createdAt", "desc"));
 
   onSnapshot(q, (snapshot) => {
-    invitesTableBody.innerHTML = "";
+    allInvites = []; // Liste leeren
 
     snapshot.forEach((doc) => {
-      const row = renderInviteRow(doc);
-      invitesTableBody.appendChild(row);
+      allInvites.push(doc.data()); // Einträge speichern
     });
+
+    applyFilters(); // Filter anwenden + Tabelle neu rendern
+  });
+}
+
+function subscribeInvites() {
+  const q = query(invitesCol, orderBy("createdAt", "desc"));
+
+  onSnapshot(q, (snapshot) => {
+    allInvites = [];
+
+    snapshot.forEach((doc) => {
+      allInvites.push(doc.data());
+    });
+
+    applyFilters();
+    updateStats(); // Statistik aktualisieren
   });
 }
 
 subscribeInvites();
 
+filterWerber.addEventListener("change", applyFilters);
+filterAktivitaet.addEventListener("change", applyFilters);
+sortDatum.addEventListener("change", applyFilters);
