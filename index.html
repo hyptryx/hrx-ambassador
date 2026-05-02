@@ -44,7 +44,7 @@
 
     <!-- FORMULAR -->
     <section class="card">
-      <h2>Neue Werbung eintragen</h2>
+      <h2>Neuen Bewerber eintragen</h2>
 
       <form id="inviteForm">
 
@@ -116,6 +116,33 @@
     <section class="card">
       <h2>Alle Einträge</h2>
 
+    <!-- TABELLE -->
+    <section class="card">
+      <h2>Alle Einträge</h2>
+
+      <div class="filter-bar">
+
+        <select id="filterWerber">
+          <option value="">Alle Werber</option>
+        </select>
+
+        <select id="filterAktivitaet">
+          <option value="">Alle Aktivitäten</option>
+          <option value="probezeit">Probezeit</option>
+          <option value="aktiv">Aktiv</option>
+          <option value="sehr_aktiv">Sehr aktiv</option>
+          <option value="abgelehnt">Abgelehnt</option>
+        </select>
+
+        <select id="sortDatum">
+          <option value="desc">Datum: Neu → Alt</option>
+          <option value="asc">Datum: Alt → Neu</option>
+        </select>
+
+      </div>
+
+      <table id="invitesTable">
+      
       <table id="invitesTable">
         <thead>
           <tr>
