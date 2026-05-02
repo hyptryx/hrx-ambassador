@@ -16,8 +16,14 @@
     <p>Wer hat wen zu HRX eingeladen?</p>
   </header>
 
-    <main class="container">
+  <!-- ⭐ GROSSER STATISTIK-BUTTON -->
+  <div class="stats-button-wrapper">
+    <a href="stats.html" class="stats-button">📊 Statistik-Dashboard öffnen</a>
+  </div>
 
+  <main class="container">
+
+    <!-- ⭐ STATISTIK-DASHBOARD -->
     <section class="stats-grid">
 
       <div class="stat-card">
@@ -42,7 +48,7 @@
 
     </section>
 
-    <!-- FORMULAR -->
+    <!-- ⭐ FORMULAR -->
     <section class="card">
       <h2>Neuen Bewerber eintragen</h2>
 
@@ -112,7 +118,7 @@
       </form>
     </section>
 
-    <!-- TABELLE -->
+    <!-- ⭐ TABELLE -->
     <section class="card">
       <h2>Alle Einträge</h2>
 
@@ -153,6 +159,12 @@
           <!-- Wird per JS gefüllt -->
         </tbody>
       </table>
+
+      <!-- ⭐ CSV EXPORT BUTTON -->
+      <button id="exportCsvBtn" class="secondary-btn" style="margin-top: 1rem;">
+        📥 CSV Export
+      </button>
+
     </section>
 
   </main>
