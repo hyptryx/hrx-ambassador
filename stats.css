@@ -1,0 +1,153 @@
+/* ===========================
+   HRX Statistik – Global
+   =========================== */
+
+:root {
+  --hrx-purple: #7b3fe4;
+  --hrx-purple-dark: #5b2bb0;
+  --hrx-purple-light: #f3e9ff;
+  --bg-light: #ffffff;
+  --bg-dark: #f7f4ff;
+  --text-main: #1f1f1f;
+  --border-light: #e3e3e3;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-dark);
+  color: var(--text-main);
+}
+
+/* ===========================
+   Header
+   =========================== */
+
+.stats-header {
+  background: linear-gradient(135deg, var(--hrx-purple), var(--hrx-purple-dark));
+  color: #fff;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.stats-header h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.stats-header p {
+  margin: 0.4rem 0 1.2rem;
+  font-size: 1.15rem;
+  opacity: 0.9;
+}
+
+/* Zurück-Button */
+
+.back-button {
+  display: inline-block;
+  margin-top: 0.8rem;
+  background: #fff;
+  color: var(--hrx-purple-dark);
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.back-button:hover {
+  background: var(--hrx-purple-light);
+}
+
+/* ===========================
+   Layout
+   =========================== */
+
+.stats-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* ===========================
+   KPI Grid
+   =========================== */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.kpi-card {
+  background: var(--bg-light);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 1.4rem;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+.kpi-card h3 {
+  margin: 0;
+  color: var(--hrx-purple-dark);
+  font-size: 1.1rem;
+}
+
+.kpi-card p {
+  margin: 0.6rem 0 0;
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: var(--hrx-purple-dark);
+}
+
+/* ===========================
+   Chart Cards
+   =========================== */
+
+.chart-card {
+  background: var(--bg-light);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 1.8rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.chart-card h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--hrx-purple-dark);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+canvas {
+  width: 100% !important;
+  max-height: 420px;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+
+@media (max-width: 700px) {
+  .chart-card {
+    padding: 1.2rem;
+  }
+
+  .kpi-card p {
+    font-size: 1.8rem;
+  }
+
+  .stats-header h1 {
+    font-size: 1.7rem;
+  }
+}
