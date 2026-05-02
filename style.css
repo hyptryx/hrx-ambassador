@@ -249,3 +249,10 @@ a.twitch-link:hover {
   border: 1px solid var(--border-light);
   background: #fff;
 }
+
+table {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
