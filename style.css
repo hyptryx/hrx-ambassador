@@ -231,3 +231,21 @@ a.twitch-link:hover {
   margin: 0.5rem 0 0;
   font-weight: 700;
 }
+
+/* ===========================
+   Filter-Leiste
+   =========================== */
+
+.filter-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-bar select {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  background: #fff;
+}
