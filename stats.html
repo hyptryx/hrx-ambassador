@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HRX Statistik Dashboard</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="stats.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <header class="stats-header">
+    <h1>📊 HRX Ambassador – Statistik Dashboard</h1>
+    <p>Live‑Auswertung aller Ambassador‑Einladungen</p>
+
+    <a href="index.html" class="back-button">← Zurück zur Übersicht</a>
+  </header>
+
+  <main class="stats-container">
+
+    <!-- KPI GRID -->
+    <section class="kpi-grid">
+
+      <div class="kpi-card">
+        <h3>Gesamt geworben</h3>
+        <p id="kpiTotal">0</p>
+      </div>
+
+      <div class="kpi-card">
+        <h3>Aktiv</h3>
+        <p id="kpiAktiv">0</p>
+      </div>
+
+      <div class="kpi-card">
+        <h3>Sehr aktiv</h3>
+        <p id="kpiSehrAktiv">0</p>
+      </div>
+
+      <div class="kpi-card">
+        <h3>Abgelehnt</h3>
+        <p id="kpiAbgelehnt">0</p>
+      </div>
+
+    </section>
+
+    <!-- CHARTS -->
+    <section class="chart-card">
+      <h2>Aktivität nach Status</h2>
+      <canvas id="chartAktivitaet"></canvas>
+    </section>
+
+    <section class="chart-card">
+      <h2>Wachstum über Zeit</h2>
+      <canvas id="chartWachstum"></canvas>
+    </section>
+
+    <section class="chart-card">
+      <h2>Top Werber</h2>
+      <canvas id="chartTopWerber"></canvas>
+    </section>
+
+  </main>
+
+  <!-- Firebase + Stats Script -->
+  <script type="module" src="stats.js"></script>
+
+</body>
+</html>
