@@ -15,7 +15,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ===========================
-   Firebase Config einfügen
+   Firebase Config
    =========================== */
 
 const firebaseConfig = {
@@ -51,6 +51,9 @@ const statAktiv = document.getElementById("statAktiv");
 const statSehrAktiv = document.getElementById("statSehrAktiv");
 const statAbgelehnt = document.getElementById("statAbgelehnt");
 
+// CSV Export Button
+const exportCsvBtn = document.getElementById("exportCsvBtn");
+
 /* ===========================
    Collections
    =========================== */
@@ -66,7 +69,6 @@ let allInvites = [];
 async function loadAmbassadors() {
   const snapshot = await getDocs(ambassadorsCol);
 
-  // Dropdown leeren
   werberSelect.innerHTML = '<option value="">Bitte auswählen...</option>';
 
   snapshot.forEach((doc) => {
@@ -111,6 +113,7 @@ addAmbassadorBtn.addEventListener("click", async () => {
   });
 
   loadAmbassadors();
+  loadWerberFilter();
 });
 
 /* ===========================
@@ -151,32 +154,7 @@ inviteForm.addEventListener("submit", async (e) => {
 });
 
 /* ===========================
-   Tabelle live aktualisieren
-   =========================== */
-
-function renderInviteRow(doc) {
-  const data = doc.data();
-  const tr = document.createElement("tr");
-
-  const twitchCell = data.twitchLink
-    ? `<a href="${data.twitchLink}" target="_blank" class="twitch-link">Link</a>`
-    : "-";
-
-  tr.innerHTML = `
-    <td>${data.werberName || ""}</td>
-    <td>${data.geworbenerName || ""}</td>
-    <td>${twitchCell}</td>
-    <td>${data.datum || ""}</td>
-    <td>${data.aktivitaet || ""}</td>
-    <td>${data.zusageGesendet ? "ja" : "nein"}</td>
-    <td>${data.modsAktionen || ""}</td>
-  `;
-
-  return tr;
-}
-
-/* ===========================
-   Tabelle neu rendern (für Filter)
+   Tabelle neu rendern
    =========================== */
 
 function renderTable(list) {
@@ -210,17 +188,14 @@ function renderTable(list) {
 function applyFilters() {
   let filtered = [...allInvites];
 
-  // Filter Werber
   if (filterWerber.value !== "") {
     filtered = filtered.filter(i => i.werberName === filterWerber.value);
   }
 
-  // Filter Aktivität
   if (filterAktivitaet.value !== "") {
     filtered = filtered.filter(i => i.aktivitaet === filterAktivitaet.value);
   }
 
-  // Sortierung nach Datum
   filtered.sort((a, b) => {
     if (sortDatum.value === "desc") {
       return b.datum.localeCompare(a.datum);
@@ -243,6 +218,10 @@ function updateStats() {
   statAbgelehnt.textContent = allInvites.filter(i => i.aktivitaet === "abgelehnt").length;
 }
 
+/* ===========================
+   Live-Daten aus Firestore
+   =========================== */
+
 function subscribeInvites() {
   const q = query(invitesCol, orderBy("createdAt", "desc"));
 
@@ -254,11 +233,60 @@ function subscribeInvites() {
     });
 
     applyFilters();
-    updateStats(); // Statistik aktualisieren
+    updateStats();
   });
 }
 
 subscribeInvites();
+
+/* ===========================
+   CSV Export
+   =========================== */
+
+function exportCSV() {
+  if (allInvites.length === 0) {
+    alert("Keine Daten zum Exportieren.");
+    return;
+  }
+
+  const header = [
+    "Werber",
+    "Geworbener",
+    "Twitch",
+    "Datum",
+    "Aktivität",
+    "Zusage",
+    "Mods"
+  ];
+
+  const rows = allInvites.map(i => [
+    i.werberName,
+    i.geworbenerName,
+    i.twitchLink,
+    i.datum,
+    i.aktivitaet,
+    i.zusageGesendet ? "ja" : "nein",
+    i.modsAktionen
+  ]);
+
+  const csvContent =
+    "data:text/csv;charset=utf-8," +
+    [header, ...rows].map(e => e.join(";")).join("\n");
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "hrx-ambassador-export.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+exportCsvBtn.addEventListener("click", exportCSV);
+
+/* ===========================
+   Filter Events
+   =========================== */
 
 filterWerber.addEventListener("change", applyFilters);
 filterAktivitaet.addEventListener("change", applyFilters);
