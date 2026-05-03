@@ -371,3 +371,26 @@ a.twitch-link:hover {
 #cancelEdit:hover {
   background: #e3d0ff;
 }
+
+/* ===========================
+   Bearbeiten-Button in Tabelle
+   =========================== */
+
+.edit-btn {
+  background: var(--hrx-purple-light);
+  color: var(--hrx-purple-dark);
+  border: 1px solid var(--hrx-purple);
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.edit-btn:hover {
+  background: var(--hrx-purple);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
