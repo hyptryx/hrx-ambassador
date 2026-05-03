@@ -11,7 +11,9 @@ import {
   onSnapshot,
   query,
   orderBy,
-  serverTimestamp
+  serverTimestamp,
+  updateDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ===========================
@@ -53,6 +55,16 @@ const statAbgelehnt = document.getElementById("statAbgelehnt");
 
 // CSV Export Button
 const exportCsvBtn = document.getElementById("exportCsvBtn");
+
+// Bearbeiten-Overlay Elemente
+const editOverlay = document.getElementById("editOverlay");
+const editAktivitaet = document.getElementById("editAktivitaet");
+const editModsAktionen = document.getElementById("editModsAktionen");
+const saveEditBtn = document.getElementById("saveEdit");
+const cancelEditBtn = document.getElementById("cancelEdit");
+
+// aktuell bearbeitetes Dokument
+let currentEditId = null;
 
 /* ===========================
    Collections
@@ -174,11 +186,38 @@ function renderTable(list) {
       <td>${data.datum}</td>
       <td>${data.aktivitaet}</td>
       <td>${data.zusageGesendet ? "ja" : "nein"}</td>
-      <td>${data.modsAktionen}</td>
+      <td>${data.modsAktionen || ""}</td>
+      <td>
+        <button class="edit-btn" data-id="${data.id}">Bearbeiten</button>
+      </td>
     `;
 
     invitesTableBody.appendChild(tr);
   });
+
+  // Bearbeiten-Buttons nach dem Rendern verdrahten
+  document.querySelectorAll(".edit-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      openEditForm(id);
+    });
+  });
+}
+
+function openEditForm(id) {
+  currentEditId = id;
+
+  const entry = allInvites.find(i => i.id === id);
+  if (!entry) {
+    console.error("Eintrag für Bearbeitung nicht gefunden:", id);
+    return;
+  }
+
+  // Felder im Overlay mit aktuellen Werten füllen
+  editAktivitaet.value = entry.aktivitaet || "probezeit";
+  editModsAktionen.value = entry.modsAktionen || "";
+
+  editOverlay.classList.remove("hidden");
 }
 
 /* ===========================
@@ -228,9 +267,12 @@ function subscribeInvites() {
   onSnapshot(q, (snapshot) => {
     allInvites = [];
 
-    snapshot.forEach((doc) => {
-      allInvites.push(doc.data());
-    });
+    snapshot.forEach((d) => {
+  allInvites.push({
+    id: d.id,
+    ...d.data()
+  });
+});
 
     applyFilters();
     updateStats();
@@ -291,3 +333,32 @@ exportCsvBtn.addEventListener("click", exportCSV);
 filterWerber.addEventListener("change", applyFilters);
 filterAktivitaet.addEventListener("change", applyFilters);
 sortDatum.addEventListener("change", applyFilters);
+
+// Bearbeiten abbrechen
+cancelEditBtn.addEventListener("click", () => {
+  editOverlay.classList.add("hidden");
+  currentEditId = null;
+});
+
+// Bearbeitung speichern
+saveEditBtn.addEventListener("click", async () => {
+  if (!currentEditId) return;
+
+  const newAktivitaet = editAktivitaet.value;
+  const newModsAktionen = editModsAktionen.value.trim();
+
+  try {
+    const ref = doc(db, "ambassadorInvites", currentEditId);
+
+    await updateDoc(ref, {
+      aktivitaet: newAktivitaet,
+      modsAktionen: newModsAktionen
+    });
+
+    editOverlay.classList.add("hidden");
+    currentEditId = null;
+  } catch (err) {
+    console.error("Fehler beim Speichern der Bearbeitung:", err);
+    alert("Fehler beim Speichern. Bitte Konsole prüfen.");
+  }
+});
