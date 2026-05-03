@@ -300,6 +300,10 @@ a.twitch-link:hover {
   z-index: 9999;
 }
 
+.edit-overlay.hidden {
+  display: none;
+}
+
 .edit-box {
   background: #ffffff;
   color: var(--text-main);
