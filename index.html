@@ -153,6 +153,7 @@
             <th>Aktivität</th>
             <th>Zu-/Absage</th>
             <th>Mods Aktionen</th>
+            <th>Aktionen</th> <!-- NEU -->
           </tr>
         </thead>
         <tbody>
@@ -172,5 +173,34 @@
   <!-- Firebase + App Script -->
   <script type="module" src="app.js?v=1"></script>
 
+  <!-- Firebase + App Script -->
+  <script type="module" src="app.js?v=1"></script>
+
+  <!-- Bearbeiten-Overlay -->
+  <div id="editOverlay" class="edit-overlay hidden">
+    <div class="edit-box">
+      <h3>Eintrag bearbeiten</h3>
+
+      <label for="editAktivitaet">Aktivität:</label>
+      <select id="editAktivitaet">
+        <option value="probezeit">Probezeit</option>
+        <option value="aktiv">aktiv</option>
+        <option value="sehr_aktiv">sehr aktiv</option>
+        <option value="abgelehnt">abgelehnt</option>
+      </select>
+
+      <label for="editModsAktionen">Mods Aktionen:</label>
+      <textarea id="editModsAktionen" rows="4"></textarea>
+
+      <div class="edit-buttons">
+        <button id="saveEdit">Speichern</button>
+        <button id="cancelEdit">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+  
 </body>
 </html>
