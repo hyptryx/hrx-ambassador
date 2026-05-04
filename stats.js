@@ -128,6 +128,10 @@ function renderAktivitaetChart(invites) {
       }]
     },
     options: {
+      animation: {
+        duration: 900,
+        easing: "easeOutCubic"
+      },
       plugins: {
         legend: {
           position: "bottom",
@@ -135,7 +139,8 @@ function renderAktivitaetChart(invites) {
         },
         datalabels: {
           color: "#333",
-          font: { weight: "bold", size: 12 }
+          font: { weight: "bold", size: 12 },
+          delay: 200
         }
       }
     }
@@ -177,6 +182,10 @@ function renderGrowth(invites) {
       layout: {
         padding: { top: 30 }
       },
+      animation: {
+        duration: 900,
+        easing: "easeOutCubic"
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -193,7 +202,8 @@ function renderGrowth(invites) {
           anchor: "end",
           align: "top",
           color: "#333",
-          font: { weight: "bold", size: 12 }
+          font: { weight: "bold", size: 12 },
+          delay: 200
         }
       }
     }
@@ -233,6 +243,10 @@ function renderTopWerber(invites) {
       layout: {
         padding: { top: 30 }
       },
+      animation: {
+        duration: 900,
+        easing: "easeOutCubic"
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -249,7 +263,8 @@ function renderTopWerber(invites) {
           anchor: "end",
           align: "top",
           color: "#333",
-          font: { weight: "bold", size: 12 }
+          font: { weight: "bold", size: 12 },
+          delay: 200
         }
       }
     }
