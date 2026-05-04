@@ -2,7 +2,6 @@
    HRX Ambassador – Statistik
    =========================== */
 
-// Firestore laden
 import {
   getFirestore,
   collection,
@@ -10,20 +9,35 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const db = getFirestore();
-
-// Collections
 const invitesCol = collection(db, "ambassadorInvites");
 
-// Canvas Elemente
+/* ===========================
+   Canvas Elemente
+   =========================== */
+
+const chartAktivitaetCanvas = document.getElementById("chartAktivitaet");
 const growthCanvas = document.getElementById("growthChart");
 const topWerberCanvas = document.getElementById("topWerberChart");
 
-// Charts
+/* ===========================
+   KPI Elemente
+   =========================== */
+
+const kpiTotal = document.getElementById("kpiTotal");
+const kpiAktiv = document.getElementById("kpiAktiv");
+const kpiSehrAktiv = document.getElementById("kpiSehrAktiv");
+const kpiAbgelehnt = document.getElementById("kpiAbgelehnt");
+
+/* ===========================
+   Charts
+   =========================== */
+
+let chartAktivitaet = null;
 let growthChart = null;
 let topWerberChart = null;
 
 /* ===========================
-   Daten laden & filtern
+   Daten laden
    =========================== */
 
 async function loadData() {
@@ -34,11 +48,75 @@ async function loadData() {
     allInvites.push({ id: doc.id, ...doc.data() });
   });
 
-  // ❗ Abgelehnte Bewerbungen rausfiltern
+  renderKPIs(allInvites);
+  renderAktivitaetChart(allInvites);
+
+  // abgelehnte Bewerbungen NICHT mitzählen
   const validInvites = allInvites.filter(i => i.aktivitaet !== "abgelehnt");
 
   renderGrowth(validInvites);
   renderTopWerber(validInvites);
+}
+
+/* ===========================
+   KPIs
+   =========================== */
+
+function renderKPIs(invites) {
+  kpiTotal.textContent = invites.length;
+  kpiAktiv.textContent = invites.filter(i => i.aktivitaet === "aktiv").length;
+  kpiSehrAktiv.textContent = invites.filter(i => i.aktivitaet === "sehr_aktiv").length;
+  kpiAbgelehnt.textContent = invites.filter(i => i.aktivitaet === "abgelehnt").length;
+}
+
+/* ===========================
+   Tortendiagramm – Aktivität
+   =========================== */
+
+function renderAktivitaetChart(invites) {
+  const counts = {
+    probezeit: invites.filter(i => i.aktivitaet === "probezeit").length,
+    aktiv: invites.filter(i => i.aktivitaet === "aktiv").length,
+    sehr_aktiv: invites.filter(i => i.aktivitaet === "sehr_aktiv").length,
+    abgelehnt: invites.filter(i => i.aktivitaet === "abgelehnt").length
+  };
+
+  if (chartAktivitaet) chartAktivitaet.destroy();
+
+  chartAktivitaet = new Chart(chartAktivitaetCanvas, {
+    type: "pie",
+    data: {
+      labels: ["Probezeit", "Aktiv", "Sehr aktiv", "Abgelehnt"],
+      datasets: [{
+        data: [
+          counts.probezeit,
+          counts.aktiv,
+          counts.sehr_aktiv,
+          counts.abgelehnt
+        ],
+        backgroundColor: [
+          "#c7a6ff",
+          "#7b3fe4",
+          "#5b2bb0",
+          "#ff6b6b"
+        ],
+        borderWidth: 2,
+        borderColor: "#fff"
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: { padding: 20 }
+        },
+        datalabels: {
+          color: "#333",
+          font: { weight: "bold", size: 12 }
+        }
+      }
+    }
+  });
 }
 
 /* ===========================
