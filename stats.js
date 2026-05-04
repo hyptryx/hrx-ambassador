@@ -2,13 +2,28 @@
    HRX Ambassador – Statistik
    =========================== */
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore,
   collection,
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const db = getFirestore();
+/* ===========================
+   Firebase Setup
+   =========================== */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDTLt6sI8eu_YszVxlYy-YbNMdR981BjQo",
+  authDomain: "hrx-ambassador.firebaseapp.com",
+  projectId: "hrx-ambassador",
+  storageBucket: "hrx-ambassador.firebasestorage.app",
+  messagingSenderId: "496071665310",
+  appId: "1:496071665310:web:add23c7e301852f998bd8f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const invitesCol = collection(db, "ambassadorInvites");
 
 /* ===========================
@@ -37,6 +52,14 @@ let growthChart = null;
 let topWerberChart = null;
 
 /* ===========================
+   DataLabels Plugin registrieren
+   =========================== */
+
+if (window.Chart && window.ChartDataLabels) {
+  Chart.register(ChartDataLabels);
+}
+
+/* ===========================
    Daten laden
    =========================== */
 
@@ -51,7 +74,7 @@ async function loadData() {
   renderKPIs(allInvites);
   renderAktivitaetChart(allInvites);
 
-  // abgelehnte Bewerbungen NICHT mitzählen
+  // abgelehnte Bewerbungen NICHT mitzählen in den unteren Charts
   const validInvites = allInvites.filter(i => i.aktivitaet !== "abgelehnt");
 
   renderGrowth(validInvites);
