@@ -8,8 +8,9 @@
   <!-- CSS -->
   <link rel="stylesheet" href="stats.css" />
 
-  <!-- Chart.js -->
+  <!-- Chart.js + DataLabels Plugin -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
 
 <body>
@@ -56,18 +57,18 @@
 
     <section class="chart-card">
       <h2>Wachstum über Zeit</h2>
-      <canvas id="chartWachstum"></canvas>
+      <canvas id="growthChart"></canvas>
     </section>
 
     <section class="chart-card">
       <h2>Top Werber</h2>
-      <canvas id="chartTopWerber"></canvas>
+      <canvas id="topWerberChart"></canvas>
     </section>
 
   </main>
 
   <!-- Firebase + Stats Script -->
-  <script type="module" src="stats.js"></script>
+  <script type="module" src="stats.js?v=2"></script>
 
 </body>
 </html>
