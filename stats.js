@@ -174,10 +174,14 @@ function renderGrowth(invites) {
       }]
     },
     options: {
+      layout: {
+        padding: { top: 30 }
+      },
       scales: {
         y: {
           beginAtZero: true,
-          ticks: { stepSize: 2 }
+          ticks: { stepSize: 2 },
+          grace: 2
         }
       },
       plugins: {
@@ -226,10 +230,14 @@ function renderTopWerber(invites) {
       }]
     },
     options: {
+      layout: {
+        padding: { top: 30 }
+      },
       scales: {
         y: {
           beginAtZero: true,
-          ticks: { stepSize: 2 }
+          ticks: { stepSize: 2 },
+          grace: 2
         }
       },
       plugins: {
@@ -253,4 +261,3 @@ function renderTopWerber(invites) {
    =========================== */
 
 loadData();
-
