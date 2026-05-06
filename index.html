@@ -17,17 +17,24 @@
   </header>
 
  <!-- ⭐ BUTTON-LEISTE: Zurück + Statistik -->
-<div class="stats-button-wrapper" style="display: flex; gap: 20px; justify-content: flex-start; flex-wrap: wrap;">
+<div class="stats-button-wrapper" style="
+    display: flex;
+    justify-content: center;   /* Zentriert beide Buttons */
+    align-items: center;
+    gap: 20px;                 /* Abstand zwischen Buttons */
+    flex-wrap: wrap;           /* Falls Bildschirm klein ist */
+    margin-bottom: 20px;
+">
 
-  <!-- Zurück-Button im gleichen Stil -->
-  <a href="https://hyptryx.github.io/hrx-tools/" class="stats-button">
-    🏠 Zurück zur HRX Startseite
-  </a>
+    <!-- Zurück-Button -->
+    <a href="https://hyptryx.github.io/hrx-tools/" class="stats-button">
+        🏠 Zurück zur HRX Startseite
+    </a>
 
-  <!-- Statistik-Button -->
-  <a href="stats.html" class="stats-button">
-    📊 Statistik-Dashboard öffnen
-  </a>
+    <!-- Statistik-Button -->
+    <a href="stats.html" class="stats-button">
+        📊 Statistik-Dashboard öffnen
+    </a>
 
 </div>
 
