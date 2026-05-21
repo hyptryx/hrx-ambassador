@@ -222,7 +222,7 @@ function renderTopWerber(invites) {
   });
 
   // ❗ Diese Namen sollen NICHT angezeigt werden
-  const hidden = ["ChatroyX", "HyptryX", "WalkingDavidson", "RoninMartoku"];
+  const hidden = ["ChaotryX", "HyptryX", "WalkingDavidson", "RoninMartoku"];
 
   // Labels + Werte filtern
   const labels = Object.keys(werberCounts).filter(w => !hidden.includes(w));
